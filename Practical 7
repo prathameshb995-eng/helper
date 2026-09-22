@@ -1,0 +1,143 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define N 4
+
+// Function to print the chessboard
+void printSolution(int board[N][N])
+{
+    printf("\nCurrent Chessboard Configuration\n");
+    printf("---------------------------------\n");
+
+    for(int i=0;i<N;i++)
+    {
+        for(int j=0;j<N;j++)
+        {
+            if(board[i][j]==1)
+                printf(" Q ");
+            else
+                printf(" . ");
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
+
+// Function to check whether a queen can be placed safely
+bool isSafe(int board[N][N], int row, int col)
+{
+    int i,j;
+
+    // Check column
+    for(i=0;i<row;i++)
+    {
+        if(board[i][col]==1)
+        {
+            printf("Position (%d,%d) is NOT SAFE (Same Column)\n",row,col);
+            return false;
+        }
+    }
+
+    // Check upper-left diagonal
+    for(i=row,j=col;i>=0 && j>=0;i--,j--)
+    {
+        if(board[i][j]==1)
+        {
+            printf("Position (%d,%d) is NOT SAFE (Left Diagonal)\n",row,col);
+            return false;
+        }
+    }
+
+    // Check upper-right diagonal
+    for(i=row,j=col;i>=0 && j<N;i--,j++)
+    {
+        if(board[i][j]==1)
+        {
+            printf("Position (%d,%d) is NOT SAFE (Right Diagonal)\n",row,col);
+            return false;
+        }
+    }
+
+    printf("Position (%d,%d) is SAFE\n",row,col);
+
+    return true;
+}
+
+// Recursive Function
+bool solveNQueensUtil(int board[N][N], int row)
+{
+    // Base Case
+    if(row>=N)
+    {
+        printf("\nAll Queens are placed successfully.\n");
+        return true;
+    }
+
+    printf("\n====================================\n");
+    printf("Trying to Place Queen in Row %d\n",row);
+    printf("====================================\n");
+
+    // Try every column
+    for(int col=0;col<N;col++)
+    {
+        printf("\nChecking Position (%d,%d)\n",row,col);
+
+        if(isSafe(board,row,col))
+        {
+            printf("Placing Queen at (%d,%d)\n",row,col);
+
+            board[row][col]=1;
+
+            printSolution(board);
+
+            // Recursive Call
+            if(solveNQueensUtil(board,row+1))
+            {
+                return true;
+            }
+
+            // Backtracking
+            printf("Backtracking...\n");
+            printf("Removing Queen from (%d,%d)\n",row,col);
+
+            board[row][col]=0;
+
+            printSolution(board);
+        }
+    }
+
+    printf("Cannot place Queen in Row %d\n",row);
+
+    return false;
+}
+
+int main()
+{
+    int board[N][N]={0};
+
+    printf("=========================================\n");
+    printf("      N-QUEEN PROBLEM USING BACKTRACKING\n");
+    printf("=========================================\n");
+
+    printf("\nBoard Size = %d x %d\n",N,N);
+
+    printf("\nInitial Empty Chessboard\n");
+
+    printSolution(board);
+
+    printf("Starting Backtracking Algorithm...\n");
+
+    if(solveNQueensUtil(board,0)==false)
+    {
+        printf("\nSolution does not exist.\n");
+        return 0;
+    }
+
+    printf("\n=========================================\n");
+    printf("FINAL SOLUTION\n");
+    printf("=========================================\n");
+
+    printSolution(board);
+
+    return 0;
+}
