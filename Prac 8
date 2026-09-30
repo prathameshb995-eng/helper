@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <string.h>
+
+// Function to implement the Naïve String Matching Algorithm
+void naiveSearch(char text[], char pattern[]) {
+    int n = strlen(text);
+    int m = strlen(pattern);
+    int found = 0;
+
+    // Loop to slide the pattern over the text one by one
+    for (int i = 0; i <= n - m; i++) {
+        int j;
+
+        // Check for pattern match at the current shift index i
+        for (j = 0; j < m; j++) {
+            if (text[i + j] != pattern[j]) {
+                break; // Mismatch found, break inner loop
+            }
+        }
+
+        // If the inner loop completed without breaking, a match is found
+        if (j == m) {
+            printf("Pattern found at index %d\n", i);
+            found = 1;
+        }
+    }
+
+    if (!found) {
+        printf("Pattern not found in the text.\n");
+    }
+}
+
+int main() {
+    char text[] = "AABAACAADAABAABA";
+    char pattern[] = "AABA";
+
+    printf("Text: %s\n", text);
+    printf("Pattern: %s\n\n", pattern);
+
+    naiveSearch(text, pattern);
+
+    return 0;
+}
