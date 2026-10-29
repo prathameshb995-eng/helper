@@ -1,0 +1,16 @@
+16 bit subtraction 
+
+ASSUME CS:CODE , DS:DATA
+CODE SEGMENT
+START: MOV AX, DATA
+       MOV DS, AX
+       MOV SI, 0000H
+       MOV AX, [SI]
+       MOV BX, [SI+2]
+       SUB AX, BX
+       MOV [SI+4], AX
+CODE ENDS
+DATA SEGMENT 
+NUM DW 5678H,1234H
+DATA ENDS 
+END
