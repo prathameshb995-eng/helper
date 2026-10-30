@@ -1,0 +1,29 @@
+ASSUME CS:CODE, DS:DATA
+
+CODE SEGMENT
+START:
+    MOV AX, DATA
+    MOV DS, AX
+
+    MOV SI, 0000H
+
+    MOV AL, [SI]
+    MOV BL, [SI+2]
+    ADD AL, BL
+    DAA
+    MOV [SI+4], AL
+
+    MOV AL, [SI+1]
+    MOV BL, [SI+3]
+    ADC AL, BL
+    DAA
+    MOV [SI+5], AL
+
+CODE ENDS
+
+DATA SEGMENT
+    NUM DW 0506H, 0705H
+    RES DW ?
+DATA ENDS
+
+END START
